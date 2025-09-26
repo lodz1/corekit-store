@@ -1,0 +1,45 @@
+<mat-toolbar color="primary" class="header">
+  <div class="container">
+    <div class="header-content">
+      <!-- Logo -->
+      <div class="logo">
+        <a routerLink="/" class="logo-link">
+          <mat-icon>storefront</mat-icon>
+          <span class="logo-text">CoreKit Store</span>
+        </a>
+      </div>
+
+      <!-- Navigation -->
+      <nav class="nav">
+        <a
+          mat-button
+          routerLink="/"
+          routerLinkActive="active"
+          [routerLinkActiveOptions]="{exact: true}"
+        >
+          Inicio
+        </a>
+        <a
+          mat-button
+          routerLink="/products"
+          routerLinkActive="active"
+        >
+          Productos
+        </a>
+      </nav>
+
+      <!-- Cart -->
+      <div class="cart">
+        <a
+          mat-button
+          routerLink="/cart"
+          routerLinkActive="active"
+          class="cart-button"
+        >
+          <mat-icon [matBadge]="cartItemsCount" matBadgeColor="accent">shopping_cart</mat-icon>
+          <span class="cart-text">Carrito</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</mat-toolbar>

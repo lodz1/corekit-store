@@ -1,0 +1,61 @@
+<div class="home-page">
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <h1 class="hero-title">Bienvenido a CoreKit Store</h1>
+        <p class="hero-subtitle">
+          Descubre los mejores productos con la mejor tecnología
+        </p>
+        <div class="hero-actions">
+          <button mat-raised-button color="primary" routerLink="/products" class="cta-button">
+            <mat-icon>shopping_bag</mat-icon>
+            Ver Productos
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features">
+    <div class="container">
+      <h2 class="section-title">¿Por qué elegirnos?</h2>
+      <div class="features-grid">
+        <div class="feature-item">
+          <mat-icon class="feature-icon">local_shipping</mat-icon>
+          <h3>Envío Gratis</h3>
+          <p>Envío gratuito en compras superiores a $50</p>
+        </div>
+        <div class="feature-item">
+          <mat-icon class="feature-icon">security</mat-icon>
+          <h3>Compra Segura</h3>
+          <p>Tus datos están protegidos con encriptación SSL</p>
+        </div>
+        <div class="feature-item">
+          <mat-icon class="feature-icon">support_agent</mat-icon>
+          <h3>Soporte 24/7</h3>
+          <p>Estamos aquí para ayudarte cuando lo necesites</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Products -->
+  <section class="featured-products">
+    <div class="container">
+      <h2 class="section-title">Productos Destacados</h2>
+      <div class="products-grid">
+        <app-product-card
+          *ngFor="let product of featuredProducts"
+          [product]="product">
+        </app-product-card>
+      </div>
+      <div class="view-all">
+        <button mat-stroked-button color="primary" routerLink="/products">
+          Ver Todos los Productos
+        </button>
+      </div>
+    </div>
+  </section>
+</div>

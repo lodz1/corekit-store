@@ -1,0 +1,120 @@
+.home-page {
+  min-height: 100vh;
+}
+
+// Hero Section
+.hero {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: white;
+  padding: 6rem 0;
+  text-align: center;
+
+  .hero-content {
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .hero-title {
+    font-size: 3rem;
+    font-weight: 700;
+    margin-bottom: 1rem;
+
+    @media (max-width: 768px) {
+      font-size: 2rem;
+    }
+  }
+
+  .hero-subtitle {
+    font-size: 1.3rem;
+    margin-bottom: 2rem;
+    opacity: 0.9;
+
+    @media (max-width: 768px) {
+      font-size: 1.1rem;
+    }
+  }
+
+  .cta-button {
+    font-size: 1.1rem;
+    padding: 0.8rem 2rem;
+
+    mat-icon {
+      margin-right: 0.5rem;
+    }
+  }
+}
+
+// Features Section
+.features {
+  padding: 4rem 0;
+  background-color: var(--surface);
+
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+  }
+
+  .feature-item {
+    text-align: center;
+    padding: 2rem;
+    border-radius: 8px;
+    background-color: var(--background);
+    transition: transform 0.2s ease;
+
+    &:hover {
+      transform: translateY(-4px);
+    }
+
+    .feature-icon {
+      font-size: 3rem;
+      width: 3rem;
+      height: 3rem;
+      color: var(--primary);
+      margin-bottom: 1rem;
+    }
+
+    h3 {
+      font-size: 1.3rem;
+      margin-bottom: 0.5rem;
+      color: var(--text-primary);
+    }
+
+    p {
+      color: var(--text-secondary);
+      line-height: 1.6;
+    }
+  }
+}
+
+// Featured Products Section
+.featured-products {
+  padding: 4rem 0;
+
+  .products-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .view-all {
+    text-align: center;
+    margin-top: 2rem;
+  }
+}
+
+// Section Titles
+.section-title {
+  text-align: center;
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+}

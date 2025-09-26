@@ -1,0 +1,27 @@
+<mat-card class="product-card">
+  <div class="product-image">
+    <img [src]="product.image" [alt]="product.name" loading="lazy">
+  </div>
+
+  <mat-card-content>
+    <h3 class="product-name">{{ product.name }}</h3>
+    <p class="product-description" *ngIf="product.description">
+      {{ product.description }}
+    </p>
+    <div class="product-price">
+      ${{ product.price | number:'1.2-2' }}
+    </div>
+  </mat-card-content>
+
+  <mat-card-actions>
+    <button
+      mat-raised-button
+      color="primary"
+      class="add-to-cart-btn"
+      (click)="onAddToCart()"
+    >
+      <mat-icon>add_shopping_cart</mat-icon>
+      Agregar al carrito
+    </button>
+  </mat-card-actions>
+</mat-card>

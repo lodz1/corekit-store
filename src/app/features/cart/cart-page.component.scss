@@ -1,0 +1,50 @@
+.cart-page {
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.page-header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.page-title {
+  font-size: 2.5rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 4rem 2rem;
+}
+
+.empty-cart-icon {
+  font-size: 6rem;
+  width: 6rem;
+  height: 6rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.empty-cart h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.empty-cart p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+  margin-bottom: 2rem;
+}
+
+.empty-cart button {
+  padding: 0.8rem 2rem;
+  font-size: 1.1rem;
+}
+
+.empty-cart button mat-icon {
+  margin-right: 0.5rem;
+}

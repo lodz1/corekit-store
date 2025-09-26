@@ -1,0 +1,14 @@
+<div class="products-page">
+  <div class="container">
+    <div class="page-header">
+      <h1 class="page-title">Nuestros Productos</h1>
+      <p class="page-subtitle">Descubre nuestra selección de productos de alta calidad</p>
+    </div>
+    <div class="products-grid">
+      <app-product-card
+        *ngFor="let product of products"
+        [product]="product">
+      </app-product-card>
+    </div>
+  </div>
+</div>
