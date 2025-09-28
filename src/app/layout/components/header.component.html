@@ -36,7 +36,13 @@
           routerLinkActive="active"
           class="cart-button"
         >
-          <mat-icon [matBadge]="cartItemsCount" matBadgeColor="accent">shopping_cart</mat-icon>
+          <mat-icon
+            [matBadge]="cartItemsCount > 0 ? cartItemsCount : null"
+            matBadgeColor="accent"
+            matBadgeSize="small"
+          >
+            shopping_cart
+          </mat-icon>
           <span class="cart-text">Carrito</span>
         </a>
       </div>

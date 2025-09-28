@@ -1,24 +1,26 @@
 <mat-card class="product-card">
-  <div class="product-image">
-    <img [src]="product.imageUrl || 'https://picsum.photos/300/200?random=1'" [alt]="product.name" loading="lazy">
-  </div>
-
-  <mat-card-content>
-    <h3 class="product-name">{{ product.name }}</h3>
-    <p class="product-category" *ngIf="product.categoryName">
-      {{ product.categoryName }}
-    </p>
-    <div class="product-price">
-      ${{ product.price | number:'1.2-2' }}
+  <a class="product-link" [routerLink]="['/products', product.id]">
+    <div class="product-image">
+      <img [src]="product.imageUrl || 'https://picsum.photos/300/200?random=1'" [alt]="product.name" loading="lazy">
     </div>
-  </mat-card-content>
+
+    <mat-card-content>
+      <h3 class="product-name">{{ product.name }}</h3>
+      <p class="product-category" *ngIf="product.categoryName">
+        {{ product.categoryName }}
+      </p>
+      <div class="product-price">
+        ${{ product.price | number:'1.2-2' }}
+      </div>
+    </mat-card-content>
+  </a>
 
   <mat-card-actions>
     <button
       mat-raised-button
       color="primary"
       class="add-to-cart-btn"
-      (click)="onAddToCart()"
+      (click)="onAddToCart($event)"
     >
       <mat-icon>add_shopping_cart</mat-icon>
       Agregar al carrito
