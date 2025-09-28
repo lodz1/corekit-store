@@ -1,0 +1,138 @@
+<div class="product-detail">
+  <div class="container">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="loading-container">
+      <mat-spinner diameter="50"></mat-spinner>
+      <p>Cargando producto...</p>
+    </div>
+
+    <!-- Error State -->
+    <div *ngIf="error && !loading" class="error-container">
+      <mat-icon class="error-icon">error_outline</mat-icon>
+      <h2>Error</h2>
+      <p>{{ error }}</p>
+      <button mat-raised-button color="primary" (click)="goBack()">
+        <mat-icon>arrow_back</mat-icon>
+        Volver a Productos
+      </button>
+    </div>
+
+    <!-- Product Content -->
+    <div *ngIf="product && !loading && !error" class="product-content">
+      <!-- Back Button -->
+      <div class="back-button-container">
+        <button mat-icon-button class="back-button" (click)="goBack()">
+          <mat-icon>arrow_back</mat-icon>
+        </button>
+      </div>
+
+      <!-- Product Grid -->
+      <div class="product-grid">
+        <!-- Images Section -->
+        <div class="images-section">
+          <!-- Main Image -->
+          <div class="main-image-container">
+            <img
+              [src]="getProductImages()[selectedImageIndex] || '/assets/placeholder-product.jpg'"
+              [alt]="product.name"
+              class="main-image"
+            />
+          </div>
+
+          <!-- Thumbnail Images -->
+          <div *ngIf="getProductImages().length > 1" class="thumbnail-container">
+            <button
+              *ngFor="let image of getProductImages(); let i = index"
+              mat-icon-button
+              class="thumbnail-button"
+              [class.selected]="i === selectedImageIndex"
+              (click)="onImageSelect(i)"
+            >
+              <img [src]="image" [alt]="product.name + ' ' + (i + 1)" class="thumbnail-image" />
+            </button>
+          </div>
+        </div>
+
+        <!-- Product Info Section -->
+        <div class="product-info-section">
+          <!-- Product Header -->
+          <div class="product-header">
+            <h1 class="product-name">{{ product.name }}</h1>
+            <div class="product-price">
+              <span class="price">${{ product.price | number:'1.2-2' }}</span>
+              <span *ngIf="product.unit" class="unit">por {{ product.unit }}</span>
+            </div>
+          </div>
+
+          <!-- Stock Info -->
+          <div class="stock-info">
+            <mat-chip
+              [color]="(product.stock || 0) > 0 ? 'primary' : 'warn'"
+            >
+              <mat-icon>{{ (product.stock || 0) > 0 ? 'check_circle' : 'cancel' }}</mat-icon>
+              {{ (product.stock || 0) > 0 ? 'En Stock' : 'Sin Stock' }}
+              <span *ngIf="product.stock">({{ product.stock }} disponibles)</span>
+            </mat-chip>
+          </div>
+
+          <!-- Short Description -->
+          <div *ngIf="product.shortDescription" class="short-description">
+            <p>{{ product.shortDescription }}</p>
+          </div>
+
+          <!-- Add to Cart Section -->
+          <div class="add-to-cart-section">
+            <div class="quantity-selector">
+              <mat-form-field appearance="outline" class="quantity-field">
+                <mat-label>Cantidad</mat-label>
+                <mat-select [(value)]="selectedQuantity" (selectionChange)="onQuantityChange($event.value)">
+                  <mat-option *ngFor="let qty of getQuantityOptions()" [value]="qty">
+                    {{ qty }}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <button
+              mat-raised-button
+              color="primary"
+              class="add-to-cart-button"
+              [disabled]="!product.stock || product.stock <= 0"
+              (click)="onAddToCart()"
+            >
+              <mat-icon>shopping_cart</mat-icon>
+              Agregar al Carrito
+            </button>
+          </div>
+
+          <!-- Product Details Tabs -->
+          <mat-tab-group class="product-tabs">
+            <!-- Description Tab -->
+            <mat-tab label="Descripción">
+              <div class="tab-content">
+                <div *ngIf="product.longDescription" class="long-description">
+                  <p>{{ product.longDescription }}</p>
+                </div>
+                <div *ngIf="!product.longDescription" class="no-description">
+                  <p>No hay descripción disponible para este producto.</p>
+                </div>
+              </div>
+            </mat-tab>
+
+            <!-- Attributes Tab -->
+            <mat-tab *ngIf="getAttributeEntries().length > 0" label="Especificaciones">
+              <div class="tab-content">
+                <div class="attributes-list">
+                  <div *ngFor="let attr of getAttributeEntries()" class="attribute-item">
+                    <span class="attribute-key">{{ attr.key }}:</span>
+                    <span class="attribute-value">{{ attr.value }}</span>
+                  </div>
+                </div>
+              </div>
+            </mat-tab>
+          </mat-tab-group>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
