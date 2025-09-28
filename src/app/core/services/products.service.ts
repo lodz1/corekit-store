@@ -9,6 +9,12 @@ export interface Product {
   price: number;
   imageUrl?: string;
   categoryName?: string;
+  shortDescription?: string;
+  longDescription?: string;
+  unit?: string;
+  stock?: number;
+  images?: string[];
+  attributes?: { [key: string]: any };
 }
 
 export interface ProductsResponse {
@@ -47,5 +53,12 @@ export class ProductsService {
     }
 
     return this.http.get<ProductsResponse>(`${this.apiUrl}/catalog`, { params: httpParams });
+  }
+
+  /**
+   * Obtiene un producto individual por ID
+   */
+  getProduct(id: string): Observable<Product> {
+    return this.http.get<Product>(`${this.apiUrl}/${id}`);
   }
 }
