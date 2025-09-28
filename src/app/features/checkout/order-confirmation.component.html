@@ -1,0 +1,159 @@
+<div class="confirmation-container">
+  <div *ngIf="isLoading(); else contentTemplate" class="loading-container">
+    <mat-spinner></mat-spinner>
+    <p>Cargando confirmación del pedido...</p>
+  </div>
+
+  <ng-template #contentTemplate>
+    <div *ngIf="order(); else emptyStateTemplate">
+      <!-- Header de confirmación -->
+      <div class="confirmation-header">
+        <mat-icon class="success-icon">check_circle</mat-icon>
+        <h1>¡Gracias por tu compra!</h1>
+        <p>Tu pedido ha sido confirmado y está siendo procesado</p>
+      </div>
+
+      <!-- Información del pedido -->
+      <mat-card class="order-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>receipt</mat-icon>
+            Pedido #{{ order()!.orderNumber }}
+          </mat-card-title>
+          <mat-card-subtitle>
+            Fecha: {{ order()!.createdAt | date:'dd/MM/yyyy HH:mm' }}
+          </mat-card-subtitle>
+        </mat-card-header>
+
+        <mat-card-content>
+          <!-- Estado del pedido -->
+          <div class="order-status">
+            <mat-icon [class]="getStatusIconClass()">{{ getStatusIcon() }}</mat-icon>
+            <span [class]="getStatusTextClass()">{{ getStatusText() }}</span>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Items del pedido -->
+          <div class="order-items">
+            <h3>Productos</h3>
+            <div *ngFor="let item of order()!.items" class="order-item">
+              <div class="item-info">
+                <h4>{{ item.name }}</h4>
+                <p class="item-details">
+                  Cantidad: {{ item.quantity }} |
+                  Precio unitario: ${{ item.price | number:'1.2-2' }}
+                </p>
+              </div>
+              <div class="item-subtotal">
+                ${{ item.subtotal | number:'1.2-2' }}
+              </div>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <!-- Totales -->
+          <div class="order-totals">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span>${{ order()!.totals.itemsTotal | number:'1.2-2' }}</span>
+            </div>
+            <div class="total-row">
+              <span>Envío:</span>
+              <span>${{ order()!.totals.shipping | number:'1.2-2' }}</span>
+            </div>
+            <div class="total-row">
+              <span>Impuestos:</span>
+              <span>${{ order()!.totals.taxes | number:'1.2-2' }}</span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="total-row grand-total">
+              <span>Total:</span>
+              <span>${{ order()!.totals.grandTotal | number:'1.2-2' }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Información del cliente -->
+      <mat-card class="customer-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>person</mat-icon>
+            Datos del Cliente
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="customer-info">
+            <div class="info-row">
+              <strong>Nombre:</strong>
+              <span>{{ order()!.customer.fullName }}</span>
+            </div>
+            <div class="info-row">
+              <strong>Email:</strong>
+              <span>{{ order()!.customer.email }}</span>
+            </div>
+            <div class="info-row" *ngIf="order()!.customer.phone">
+              <strong>Teléfono:</strong>
+              <span>{{ order()!.customer.phone }}</span>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Dirección de envío -->
+      <mat-card class="shipping-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>local_shipping</mat-icon>
+            Dirección de Envío
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <div class="shipping-address">
+            <p>{{ order()!.shippingAddress.street }} {{ order()!.shippingAddress.number }}</p>
+            <p>{{ order()!.shippingAddress.city }}, {{ order()!.shippingAddress.province }}</p>
+            <p>Código Postal: {{ order()!.shippingAddress.postalCode }}</p>
+          </div>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Notas adicionales -->
+      <mat-card *ngIf="order()!.notes" class="notes-card">
+        <mat-card-header>
+          <mat-card-title>
+            <mat-icon>note</mat-icon>
+            Notas Adicionales
+          </mat-card-title>
+        </mat-card-header>
+        <mat-card-content>
+          <p>{{ order()!.notes }}</p>
+        </mat-card-content>
+      </mat-card>
+
+      <!-- Acciones -->
+      <div class="confirmation-actions">
+        <button mat-raised-button color="primary" (click)="goToProducts()">
+          <mat-icon>shopping_bag</mat-icon>
+          Volver al Catálogo
+        </button>
+        <button mat-stroked-button (click)="goToHome()">
+          <mat-icon>home</mat-icon>
+          Ir al Inicio
+        </button>
+      </div>
+    </div>
+
+    <ng-template #emptyStateTemplate>
+      <div class="empty-state">
+        <mat-icon>error_outline</mat-icon>
+        <h2>Pedido no encontrado</h2>
+        <p>No se pudo encontrar el pedido solicitado o ha expirado.</p>
+        <button mat-raised-button color="primary" (click)="goToProducts()">
+          Ver Productos
+        </button>
+      </div>
+    </ng-template>
+  </ng-template>
+</div>

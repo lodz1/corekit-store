@@ -1,0 +1,190 @@
+.checkout-container {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.checkout-step {
+  margin-bottom: 20px;
+}
+
+.checkout-header {
+  text-align: center;
+  margin-bottom: 30px;
+}
+
+.checkout-header h1 {
+  color: #1976d2;
+  margin-bottom: 10px;
+}
+
+.checkout-step mat-card {
+  padding: 0;
+}
+
+.checkout-step mat-card-header {
+  background-color: #f5f5f5;
+  margin: 0;
+  padding: 20px;
+  border-radius: 4px 4px 0 0;
+}
+
+.checkout-step mat-card-content {
+  padding: 20px;
+}
+
+.checkout-step mat-card-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #1976d2;
+}
+
+.cart-items {
+  margin-bottom: 20px;
+}
+
+.cart-item {
+  display: flex;
+  gap: 16px;
+  padding: 16px 0;
+  border-bottom: 1px solid #e0e0e0;
+}
+
+.cart-item:last-child {
+  border-bottom: none;
+}
+
+.item-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.item-details h4 {
+  margin: 0 0 8px 0;
+  color: #333;
+}
+
+.item-price, .item-quantity, .item-subtotal {
+  margin: 4px 0;
+  color: #666;
+}
+
+.item-subtotal {
+  font-weight: 600;
+  color: #1976d2;
+}
+
+.cart-totals {
+  margin-top: 20px;
+}
+
+.total-row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+}
+
+.grand-total {
+  font-weight: bold;
+  font-size: 1.1em;
+  color: #1976d2;
+}
+
+.warnings-banner {
+  display: flex;
+  gap: 12px;
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  border-radius: 8px;
+  padding: 16px;
+  margin-top: 20px;
+}
+
+.warnings-banner mat-icon {
+  color: #f39c12;
+  margin-top: 4px;
+}
+
+.warnings-content h4 {
+  margin: 0 0 8px 0;
+  color: #856404;
+}
+
+.warnings-content ul {
+  margin: 0;
+  padding-left: 20px;
+  color: #856404;
+}
+
+.empty-cart {
+  text-align: center;
+  padding: 40px 20px;
+}
+
+.empty-cart mat-icon {
+  font-size: 64px;
+  width: 64px;
+  height: 64px;
+  color: #ccc;
+  margin-bottom: 16px;
+}
+
+.form-row {
+  display: flex;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.full-width {
+  flex: 1;
+}
+
+.half-width {
+  flex: 1;
+}
+
+.two-thirds-width {
+  flex: 2;
+}
+
+.one-third-width {
+  flex: 1;
+}
+
+.form-actions {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.form-actions button {
+  min-width: 200px;
+}
+
+.loading-container {
+  text-align: center;
+  padding: 40px;
+}
+
+.loading-container mat-spinner {
+  margin: 0 auto 20px auto;
+}
+
+@media (max-width: 768px) {
+  .form-row {
+    flex-direction: column;
+  }
+
+  .cart-item {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .item-image {
+    width: 100px;
+    height: 100px;
+    margin: 0 auto;
+  }
+}

@@ -1,0 +1,220 @@
+<div class="checkout-container">
+  <div class="checkout-header">
+    <h1>Finalizar Compra</h1>
+    <p>Revisa tu pedido y completa los datos de envío</p>
+  </div>
+
+  <div class="checkout-content" *ngIf="!isLoading(); else loadingTemplate">
+    <!-- Paso 1: Resumen del carrito -->
+    <mat-card class="checkout-step">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>shopping_cart</mat-icon>
+          Resumen del Carrito
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <div *ngIf="cartValidation(); else cartEmptyTemplate">
+          <div class="cart-items">
+            <div *ngFor="let item of cartValidation()!.items" class="cart-item">
+              <img [src]="item.imageUrl" [alt]="item.name" class="item-image">
+              <div class="item-details">
+                <h4>{{ item.name }}</h4>
+                <p class="item-price">${{ item.price | number:'1.2-2' }}</p>
+                <p class="item-quantity">Cantidad: {{ item.quantity }}</p>
+                <p class="item-subtotal">Subtotal: ${{ item.subtotal | number:'1.2-2' }}</p>
+              </div>
+            </div>
+          </div>
+
+          <mat-divider></mat-divider>
+
+          <div class="cart-totals">
+            <div class="total-row">
+              <span>Subtotal:</span>
+              <span>${{ cartValidation()!.totals.itemsTotal | number:'1.2-2' }}</span>
+            </div>
+            <div class="total-row">
+              <span>Envío:</span>
+              <span>${{ cartValidation()!.totals.shipping | number:'1.2-2' }}</span>
+            </div>
+            <div class="total-row">
+              <span>Impuestos:</span>
+              <span>${{ cartValidation()!.totals.taxes | number:'1.2-2' }}</span>
+            </div>
+            <mat-divider></mat-divider>
+            <div class="total-row grand-total">
+              <span>Total:</span>
+              <span>${{ cartValidation()!.totals.grandTotal | number:'1.2-2' }}</span>
+            </div>
+          </div>
+
+          <!-- Warnings -->
+          <div *ngIf="cartValidation()!.warnings && cartValidation()!.warnings!.length > 0"
+               class="warnings-banner">
+            <mat-icon>warning</mat-icon>
+            <div class="warnings-content">
+              <h4>Atención</h4>
+              <ul>
+                <li *ngFor="let warning of cartValidation()!.warnings">{{ warning }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <ng-template #cartEmptyTemplate>
+          <div class="empty-cart">
+            <mat-icon>shopping_cart</mat-icon>
+            <h3>Tu carrito está vacío</h3>
+            <p>Agrega algunos productos antes de continuar</p>
+            <button mat-raised-button color="primary" (click)="goToProducts()">
+              Ver Productos
+            </button>
+          </div>
+        </ng-template>
+      </mat-card-content>
+    </mat-card>
+
+    <!-- Paso 2: Formulario de datos del cliente -->
+    <mat-card class="checkout-step">
+      <mat-card-header>
+        <mat-card-title>
+          <mat-icon>person</mat-icon>
+          Datos del Cliente
+        </mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <form [formGroup]="customerForm" (ngSubmit)="onSubmit()">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Nombre completo</mat-label>
+              <input matInput formControlName="fullName" placeholder="Ingresa tu nombre completo">
+              <mat-error *ngIf="customerForm.get('fullName')?.hasError('required')">
+                El nombre es requerido
+              </mat-error>
+              <mat-error *ngIf="customerForm.get('fullName')?.hasError('minlength')">
+                El nombre debe tener al menos 3 caracteres
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Email</mat-label>
+              <input matInput formControlName="email" type="email" placeholder="tu@email.com">
+              <mat-error *ngIf="customerForm.get('email')?.hasError('required')">
+                El email es requerido
+              </mat-error>
+              <mat-error *ngIf="customerForm.get('email')?.hasError('email')">
+                Ingresa un email válido
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Teléfono (opcional)</mat-label>
+              <input matInput formControlName="phone" placeholder="+54 9 11 1234-5678">
+            </mat-form-field>
+          </div>
+
+          <h3>Dirección de Envío</h3>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="two-thirds-width">
+              <mat-label>Calle</mat-label>
+              <input matInput formControlName="street" placeholder="Av. Corrientes">
+              <mat-error *ngIf="customerForm.get('street')?.hasError('required')">
+                La calle es requerida
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="one-third-width">
+              <mat-label>Número</mat-label>
+              <input matInput formControlName="number" placeholder="1234">
+              <mat-error *ngIf="customerForm.get('number')?.hasError('required')">
+                El número es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Ciudad</mat-label>
+              <input matInput formControlName="city" placeholder="Buenos Aires">
+              <mat-error *ngIf="customerForm.get('city')?.hasError('required')">
+                La ciudad es requerida
+              </mat-error>
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Provincia</mat-label>
+              <mat-select formControlName="province">
+                <mat-option value="CABA">Ciudad Autónoma de Buenos Aires</mat-option>
+                <mat-option value="Buenos Aires">Buenos Aires</mat-option>
+                <mat-option value="Córdoba">Córdoba</mat-option>
+                <mat-option value="Santa Fe">Santa Fe</mat-option>
+                <mat-option value="Mendoza">Mendoza</mat-option>
+                <mat-option value="Tucumán">Tucumán</mat-option>
+                <mat-option value="Salta">Salta</mat-option>
+                <mat-option value="Chaco">Chaco</mat-option>
+                <mat-option value="Corrientes">Corrientes</mat-option>
+                <mat-option value="Entre Ríos">Entre Ríos</mat-option>
+                <mat-option value="Misiones">Misiones</mat-option>
+                <mat-option value="Formosa">Formosa</mat-option>
+                <mat-option value="Santiago del Estero">Santiago del Estero</mat-option>
+                <mat-option value="Catamarca">Catamarca</mat-option>
+                <mat-option value="La Rioja">La Rioja</mat-option>
+                <mat-option value="San Juan">San Juan</mat-option>
+                <mat-option value="San Luis">San Luis</mat-option>
+                <mat-option value="La Pampa">La Pampa</mat-option>
+                <mat-option value="Río Negro">Río Negro</mat-option>
+                <mat-option value="Neuquén">Neuquén</mat-option>
+                <mat-option value="Chubut">Chubut</mat-option>
+                <mat-option value="Santa Cruz">Santa Cruz</mat-option>
+                <mat-option value="Tierra del Fuego">Tierra del Fuego</mat-option>
+              </mat-select>
+              <mat-error *ngIf="customerForm.get('province')?.hasError('required')">
+                La provincia es requerida
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Código Postal</mat-label>
+              <input matInput formControlName="postalCode" placeholder="C1043">
+              <mat-error *ngIf="customerForm.get('postalCode')?.hasError('required')">
+                El código postal es requerido
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="full-width">
+              <mat-label>Notas adicionales (opcional)</mat-label>
+              <textarea matInput formControlName="notes"
+                        placeholder="Instrucciones especiales para la entrega..."
+                        rows="3"></textarea>
+            </mat-form-field>
+          </div>
+
+          <div class="form-actions">
+            <button mat-raised-button color="primary"
+                    type="submit"
+                    [disabled]="customerForm.invalid || isSubmitting()">
+              <mat-icon *ngIf="isSubmitting()">hourglass_empty</mat-icon>
+              <mat-icon *ngIf="!isSubmitting()">check</mat-icon>
+              {{ isSubmitting() ? 'Procesando...' : 'Confirmar Pedido' }}
+            </button>
+          </div>
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <ng-template #loadingTemplate>
+    <div class="loading-container">
+      <mat-spinner></mat-spinner>
+      <p>Validando carrito...</p>
+    </div>
+  </ng-template>
+</div>
