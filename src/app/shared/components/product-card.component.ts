@@ -3,14 +3,7 @@ import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
-export interface Product {
-  id: number;
-  name: string;
-  price: number;
-  image: string;
-  description?: string;
-}
+import { Product } from '../../core/services/products.service';
 
 @Component({
   selector: 'app-product-card',
@@ -21,11 +14,11 @@ export interface Product {
 })
 export class ProductCardComponent {
   @Input() product: Product = {
-    id: 1,
+    id: '1',
     name: 'Producto Ejemplo',
     price: 29.99,
-    image: 'https://picsum.photos/300/200?random=8',
-    description: 'Descripción del producto ejemplo'
+    imageUrl: 'https://picsum.photos/300/200?random=8',
+    categoryName: 'Categoría Ejemplo'
   };
 
   onAddToCart() {
