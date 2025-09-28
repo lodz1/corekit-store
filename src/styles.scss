@@ -1,23 +1,176 @@
 /* CoreKit Store - Global Styles */
 
-// SCSS Variables
-$primary-color: #3f51b5;
-$accent-color: #e91e63;
-$warn-color: #f44336;
-$background: #121212;
-$surface: #1e1e1e;
-$text-primary: #ffffff;
-$text-secondary: rgba(255, 255, 255, 0.7);
+// Importar Angular Material
+@use '@angular/material' as mat;
+
+// Incluir los estilos base de Material
+@include mat.core();
+
+// Definir paleta de colores personalizada - Tema Profesional Moderno
+$custom-primary: mat.m2-define-palette((
+  50: #e8f0fe,
+  100: #d2e3fc,
+  200: #aec8f8,
+  300: #8aadf4,
+  400: #6f98f1,
+  500: #5483ed,  // Color principal
+  600: #4c75eb,
+  700: #426ae8,
+  800: #3960e5,
+  900: #284bdf,
+  A100: #ffffff,
+  A200: #e8f0ff,
+  A400: #b5c9ff,
+  A700: #9cb5ff,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #000000,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #000000,
+    A700: #000000,
+  )
+));
+
+$custom-accent: mat.m2-define-palette((
+  50: #f3e5f5,
+  100: #e1bee7,
+  200: #ce93d8,
+  300: #ba68c8,
+  400: #ab47bc,
+  500: #9c27b0,  // Color de acento
+  600: #8e24aa,
+  700: #7b1fa2,
+  800: #6a1b9a,
+  900: #4a148c,
+  A100: #f8bbd9,
+  A200: #f48fb1,
+  A400: #ec407a,
+  A700: #d81b60,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #ffffff,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #000000,
+    A400: #ffffff,
+    A700: #ffffff,
+  )
+));
+
+$custom-warn: mat.m2-define-palette((
+  50: #ffebee,
+  100: #ffcdd2,
+  200: #ef9a9a,
+  300: #e57373,
+  400: #ef5350,
+  500: #f44336,  // Color de advertencia
+  600: #e53935,
+  700: #d32f2f,
+  800: #c62828,
+  900: #b71c1c,
+  A100: #ff8a80,
+  A200: #ff5252,
+  A400: #ff1744,
+  A700: #d50000,
+  contrast: (
+    50: #000000,
+    100: #000000,
+    200: #000000,
+    300: #000000,
+    400: #ffffff,
+    500: #ffffff,
+    600: #ffffff,
+    700: #ffffff,
+    800: #ffffff,
+    900: #ffffff,
+    A100: #000000,
+    A200: #ffffff,
+    A400: #ffffff,
+    A700: #ffffff,
+  )
+));
+
+// Crear tema claro personalizado - E-commerce Profesional
+$custom-light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $custom-primary,
+    accent: $custom-accent,
+    warn: $custom-warn,
+  ),
+  typography: mat.m2-define-typography-config(
+    $font-family: 'Roboto, "Helvetica Neue", sans-serif',
+    $headline-1: mat.m2-define-typography-level(32px, 48px, 600),
+    $headline-2: mat.m2-define-typography-level(28px, 40px, 600),
+    $headline-3: mat.m2-define-typography-level(24px, 32px, 600),
+    $headline-4: mat.m2-define-typography-level(20px, 28px, 600),
+    $headline-5: mat.m2-define-typography-level(18px, 24px, 600),
+    $headline-6: mat.m2-define-typography-level(16px, 20px, 600),
+    $subtitle-1: mat.m2-define-typography-level(16px, 24px, 500),
+    $subtitle-2: mat.m2-define-typography-level(14px, 20px, 500),
+    $body-1: mat.m2-define-typography-level(16px, 24px, 400),
+    $body-2: mat.m2-define-typography-level(14px, 20px, 400),
+    $caption: mat.m2-define-typography-level(12px, 16px, 400),
+    $button: mat.m2-define-typography-level(14px, 20px, 500),
+    $overline: mat.m2-define-typography-level(10px, 16px, 400),
+  ),
+  density: 0,
+));
+
+// Aplicar el tema personalizado
+@include mat.all-component-themes($custom-light-theme);
+
+// SCSS Variables - Tema Claro E-commerce Profesional
+$primary-color: #1976d2;      // Azul Material profesional
+$accent-color: #7b1fa2;       // Púrpura elegante
+$warn-color: #d32f2f;         // Rojo Material
+$success-color: #388e3c;      // Verde para éxito
+$background: #fafafa;         // Gris muy claro
+$surface: #ffffff;            // Blanco puro
+$surface-variant: #f5f5f5;    // Gris muy claro para elementos
+$surface-elevated: #ffffff;   // Blanco para cards elevadas
+$text-primary: #212121;       // Negro Material
+$text-secondary: #757575;     // Gris Material
+$text-tertiary: #9e9e9e;      // Gris claro
+$text-disabled: #bdbdbd;      // Gris deshabilitado
+$border-color: #e0e0e0;       // Bordes grises claros
+$divider-color: #f0f0f0;      // Divisores muy sutiles
+$shadow-light: rgba(0, 0, 0, 0.1);  // Sombras sutiles
+$shadow-medium: rgba(0, 0, 0, 0.15); // Sombras medias
 
 // CSS Custom Properties for dynamic theming
 :root {
   --primary: #{$primary-color};
   --accent: #{$accent-color};
   --warn: #{$warn-color};
+  --success: #{$success-color};
   --background: #{$background};
   --surface: #{$surface};
+  --surface-variant: #{$surface-variant};
+  --surface-elevated: #{$surface-elevated};
   --text-primary: #{$text-primary};
   --text-secondary: #{$text-secondary};
+  --text-tertiary: #{$text-tertiary};
+  --text-disabled: #{$text-disabled};
+  --border-color: #{$border-color};
+  --divider-color: #{$divider-color};
+  --shadow-light: #{$shadow-light};
+  --shadow-medium: #{$shadow-medium};
 }
 
 // Modern CSS Reset
@@ -96,3 +249,189 @@ p, h1, h2, h3, h4, h5, h6 {
 .mt-2 { margin-top: 1rem; }
 .mt-3 { margin-top: 1.5rem; }
 .mt-4 { margin-top: 2rem; }
+
+// Estilos personalizados para el tema claro e-commerce
+
+// Mejoras en campos de formulario
+.mat-mdc-form-field {
+  .mat-mdc-text-field-wrapper {
+    background-color: var(--surface);
+    border-radius: 8px;
+    transition: all 0.2s ease;
+    box-shadow: 0 1px 3px var(--shadow-light);
+
+    &:hover {
+      box-shadow: 0 2px 6px var(--shadow-medium);
+    }
+  }
+
+  .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: var(--border-color);
+      border-width: 1px;
+    }
+  }
+
+  &.mat-focused .mdc-notched-outline {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: var(--primary);
+      border-width: 2px;
+    }
+  }
+
+  .mat-mdc-form-field-label {
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .mat-mdc-input-element {
+    color: var(--text-primary);
+    font-weight: 400;
+  }
+
+  // Label flotante cuando está enfocado o tiene valor
+  &.mat-focused .mat-mdc-form-field-label,
+  &.mat-form-field-should-float .mat-mdc-form-field-label {
+    color: var(--primary);
+    font-weight: 600;
+  }
+
+  .mat-mdc-form-field-icon-suffix {
+    color: var(--text-tertiary);
+  }
+}
+
+// Mejoras en botones
+.mat-mdc-raised-button,
+.mat-mdc-unelevated-button {
+  border-radius: 8px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  transition: all 0.2s ease;
+  box-shadow: 0 2px 4px var(--shadow-light);
+
+  &:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px var(--shadow-medium);
+  }
+}
+
+.mat-mdc-outlined-button {
+  border-radius: 8px;
+  font-weight: 500;
+  text-transform: none;
+  letter-spacing: 0.5px;
+  border-color: var(--border-color);
+  color: var(--text-primary);
+
+  &:hover {
+    background-color: var(--surface-variant);
+    border-color: var(--primary);
+    color: var(--primary);
+  }
+}
+
+// Mejoras en cards
+.mat-mdc-card {
+  border-radius: 12px;
+  background-color: var(--surface-elevated);
+  border: 1px solid var(--border-color);
+  box-shadow: 0 2px 8px var(--shadow-light);
+  transition: all 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 8px 24px var(--shadow-medium);
+    transform: translateY(-2px);
+  }
+}
+
+// Mejoras en paginador
+.mat-mdc-paginator {
+  background-color: var(--surface);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  box-shadow: 0 1px 3px var(--shadow-light);
+
+  .mat-mdc-paginator-range-label {
+    color: var(--text-primary);
+    font-weight: 500;
+  }
+
+  .mat-mdc-icon-button {
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--surface-variant);
+    }
+
+    &:disabled {
+      color: var(--text-disabled);
+    }
+  }
+}
+
+// Mejoras en selects y dropdowns
+.mat-mdc-select-panel {
+  background-color: var(--surface);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 8px 24px var(--shadow-medium);
+
+  .mat-mdc-option {
+    color: var(--text-primary);
+
+    &:hover {
+      background-color: var(--surface-variant);
+    }
+
+    &.mdc-list-item--selected {
+      background-color: var(--primary);
+      color: white;
+    }
+  }
+}
+
+// Mejoras en spinners
+.mat-mdc-progress-spinner {
+  .mdc-circular-progress__determinate-circle,
+  .mdc-circular-progress__indeterminate-circle-graphic {
+    stroke: var(--primary);
+  }
+}
+
+// Mejoras en chips
+.mat-mdc-chip {
+  background-color: var(--surface-variant);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 16px;
+
+  &.mat-mdc-chip-selected {
+    background-color: var(--primary);
+    color: white;
+  }
+}
+
+// Mejoras en tooltips
+.mat-mdc-tooltip {
+  background-color: var(--text-primary);
+  color: var(--surface);
+  font-size: 12px;
+  border-radius: 4px;
+  font-weight: 500;
+}
+
+// Mejoras en snackbars
+.mat-mdc-snack-bar-container {
+  background-color: var(--surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px var(--shadow-medium);
+}
+
