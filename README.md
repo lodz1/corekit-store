@@ -1,13 +1,14 @@
 # 🛍️ CoreKit Store
 
-**E-commerce Frontend Application Built with Angular 19**
+**E-commerce Frontend Application Built with Angular 20**
 
-CoreKit Store es una aplicación de comercio electrónico moderna desarrollada con Angular 19, utilizando Angular Material para el diseño de UI y siguiendo las mejores prácticas de arquitectura frontend.
+CoreKit Store es una aplicación de comercio electrónico moderna desarrollada con Angular 20, utilizando **zoneless change detection**, Angular Material para el diseño de UI y siguiendo las mejores prácticas de arquitectura frontend.
 
 ## 🚀 Características
 
-- ✅ **Angular 19** con componentes standalone
-- ✅ **Angular Material 19** con tema oscuro personalizado
+- ✅ **Angular 20** con componentes standalone
+- ✅ **Zoneless change detection** (sin zone.js, mejor rendimiento)
+- ✅ **Angular Material 20** con tema oscuro personalizado
 - ✅ **Arquitectura modular** y escalable
 - ✅ **Responsive Design** compatible con dispositivos móviles
 - ✅ **Lazy Loading** para optimización de rendimiento
@@ -45,7 +46,9 @@ src/app/
 ### 🧭 **Navegación**
 - `/` - Página principal con productos destacados
 - `/products` - Catálogo completo de productos
-- `/cart` - Carrito de compras (estado inicial vacío)
+- `/cart` - Carrito de compras
+- `/login` - Inicio de sesión
+- `/checkout` - Checkout (requiere autenticación)
 
 ### 🛠️ **Configuraciones**
 - Environment configuration para API endpoints
@@ -56,9 +59,9 @@ src/app/
 ## 🚀 Inicio Rápido
 
 ### Prerequisitos
-- Node.js 18+ 
+- Node.js 18+
 - npm 9+
-- Angular CLI 19+
+- Angular CLI 20+
 
 ### Instalación
 
@@ -90,22 +93,24 @@ npm run build:ssr  # Compilar con SSR
 
 | Tecnología | Versión | Propósito |
 |------------|---------|-----------|
-| Angular | 19.2.x | Framework principal |
-| Angular Material | 19.2.x | Biblioteca de componentes UI |
-| TypeScript | 5.7.x | Lenguaje de programación |
+| Angular | 20.2.x | Framework principal (zoneless) |
+| Angular Material | 20.2.x | Biblioteca de componentes UI |
+| TypeScript | 5.8.x | Lenguaje de programación |
 | SCSS | - | Preprocesador CSS |
 | RxJS | 7.8.x | Programación reactiva |
+
+**Nota:** El proyecto usa **zoneless change detection** (`provideZonelessChangeDetection()`), por lo que no depende de `zone.js`.
 
 ## 📦 Dependencias Principales
 
 ```json
 {
-  "@angular/core": "^19.2.0",
-  "@angular/material": "^19.2.19",
-  "@angular/cdk": "^19.2.19",
-  "@angular/animations": "^19.2.15",
-  "@angular/router": "^19.2.0",
-  "@angular/common": "^19.2.0"
+  "@angular/core": "^20.2.0",
+  "@angular/material": "^20.2.0",
+  "@angular/cdk": "^20.2.0",
+  "@angular/animations": "^20.2.0",
+  "@angular/router": "^20.2.0",
+  "@angular/common": "^20.2.0"
 }
 ```
 
@@ -123,12 +128,8 @@ export const environment = {
 
 ## 🎯 Próximos Pasos
 
-- [ ] Implementar servicio de productos conectado a API
-- [ ] Agregar funcionalidad completa del carrito
-- [ ] Implementar autenticación de usuarios
 - [ ] Agregar sistema de filtros y búsqueda
-- [ ] Implementar checkout y procesamiento de pagos
-- [ ] Agregar testing unitario y e2e
+- [ ] Ampliar testing unitario y e2e
 - [ ] Optimización de rendimiento
 
 ## 🤝 Contribución
