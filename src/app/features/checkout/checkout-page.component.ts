@@ -15,11 +15,15 @@ import { MatSelectModule } from '@angular/material/select';
 import { ReactiveFormsModule, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { CartService, CartItem } from '../../core/services/cart.service';
 import { CheckoutService } from '../../core/services/checkout.service';
+import { AuthService } from '../../core/services/auth.service';
 import {
   CartValidationResult,
   CreateOrderRequest,
-  CartItemRequest
+  CartItemRequest,
+  PaymentIntentDto,
+  PaymentResultDto
 } from '../../core/models/checkout.models';
+import { PaymentDialogComponent, PaymentDialogData } from './payment-dialog.component';
 
 @Component({
   selector: 'app-checkout-page',
@@ -46,6 +50,7 @@ export class CheckoutPageComponent implements OnInit {
   private readonly dialog = inject(MatDialog);
   private readonly cartService = inject(CartService);
   private readonly checkoutService = inject(CheckoutService);
+  private readonly authService = inject(AuthService);
   private readonly fb = inject(FormBuilder);
 
   // Signals
@@ -71,6 +76,17 @@ export class CheckoutPageComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // Verificar autenticación antes de continuar
+    if (!this.authService.isTokenValid()) {
+      this.snackBar.open('Debes iniciar sesión para continuar con el checkout', 'Iniciar Sesión', {
+        duration: 5000,
+        horizontalPosition: 'end',
+        verticalPosition: 'top'
+      });
+      this.router.navigate(['/login']);
+      return;
+    }
+
     this.validateCart();
   }
 
@@ -156,17 +172,13 @@ export class CheckoutPageComponent implements OnInit {
       const order = await this.checkoutService.createOrder(orderData, idempotencyKey).toPromise();
 
       if (order) {
-        // Limpiar carrito
-        this.cartService.clearCart();
-
-        // Limpiar clave de idempotencia
-        this.checkoutService.clearIdempotencyKey();
-
-        // Mostrar mensaje de éxito
-        this.snackBar.open(`Pedido confirmado (#${order.orderNumber})`, 'Cerrar', { duration: 5000 });
-
-        // Navegar a confirmación
-        this.router.navigate(['/order-confirmation', order.orderId]);
+        // Si la orden está en estado PendingPayment, crear intent de pago
+        if (order.status === 'PendingPayment') {
+          await this.processPayment(order);
+        } else {
+          // Orden confirmada directamente (caso legacy)
+          this.handleOrderSuccess(order);
+        }
       }
     } catch (error: any) {
       console.error('Error creating order:', error);
@@ -181,6 +193,69 @@ export class CheckoutPageComponent implements OnInit {
     } finally {
       this.isSubmitting.set(false);
     }
+  }
+
+  private async processPayment(order: any): Promise<void> {
+    try {
+      // Crear intent de pago
+      const paymentIntent = await this.checkoutService.createPaymentIntent(order.orderId).toPromise();
+
+      if (!paymentIntent) {
+        throw new Error('Error al crear el intent de pago');
+      }
+
+      // Abrir diálogo de pago
+      const dialogData: PaymentDialogData = {
+        paymentIntent,
+        orderNumber: order.orderNumber,
+        amount: order.totals.grandTotal
+      };
+
+      const dialogRef = this.dialog.open(PaymentDialogComponent, {
+        data: dialogData,
+        disableClose: true,
+        width: '500px',
+        maxWidth: '90vw'
+      });
+
+      const result = await dialogRef.afterClosed().toPromise();
+
+      if (result?.success) {
+        // Pago exitoso
+        this.handlePaymentSuccess(result.result);
+      } else {
+        // Usuario canceló o hubo error
+        this.snackBar.open('Pago cancelado. La orden permanece pendiente de pago.', 'Entendido', { duration: 5000 });
+      }
+    } catch (error: any) {
+      console.error('Error processing payment:', error);
+      this.snackBar.open('Error al procesar el pago. Intenta nuevamente.', 'Cerrar', { duration: 3000 });
+    }
+  }
+
+  private handlePaymentSuccess(paymentResult: PaymentResultDto): void {
+    // Limpiar carrito
+    this.cartService.clearCart();
+
+    // Limpiar clave de idempotencia
+    this.checkoutService.clearIdempotencyKey();
+
+    // Navegar a confirmación
+    this.router.navigate(['/order-confirmation', paymentResult.order.orderId]);
+  }
+
+  private handleOrderSuccess(order: any): void {
+    // Limpiar carrito
+    this.cartService.clearCart();
+
+    // Limpiar clave de idempotencia
+    this.checkoutService.clearIdempotencyKey();
+
+    // Mostrar mensaje de éxito
+    this.snackBar.open(`Pedido confirmado (#${order.orderNumber})`, 'Cerrar', { duration: 5000 });
+
+    // Navegar a confirmación
+    this.router.navigate(['/order-confirmation', order.orderId]);
   }
 
   goToProducts(): void {

@@ -7,10 +7,27 @@
   <ng-template #contentTemplate>
     <div *ngIf="order(); else emptyStateTemplate">
       <!-- Header de confirmación -->
-      <div class="confirmation-header">
-        <mat-icon class="success-icon">check_circle</mat-icon>
-        <h1>¡Gracias por tu compra!</h1>
-        <p>Tu pedido ha sido confirmado y está siendo procesado</p>
+      <div class="confirmation-header"
+           [ngClass]="{
+             'confirmed': order()!.status === 'Confirmed',
+             'pending': order()!.status === 'Pending',
+             'pending-payment': order()!.status === 'PendingPayment',
+             'cancelled': order()!.status === 'Cancelled'
+           }">
+        <mat-icon class="success-icon" *ngIf="order()!.status === 'Confirmed'">check_circle</mat-icon>
+        <mat-icon class="pending-icon" *ngIf="order()!.status === 'Pending'">schedule</mat-icon>
+        <mat-icon class="payment-icon" *ngIf="order()!.status === 'PendingPayment'">payment</mat-icon>
+        <mat-icon class="cancelled-icon" *ngIf="order()!.status === 'Cancelled'">cancel</mat-icon>
+
+        <h1 *ngIf="order()!.status === 'Confirmed'">¡Gracias por tu compra!</h1>
+        <h1 *ngIf="order()!.status === 'Pending'">Pedido en Proceso</h1>
+        <h1 *ngIf="order()!.status === 'PendingPayment'">Pago Pendiente</h1>
+        <h1 *ngIf="order()!.status === 'Cancelled'">Pedido Cancelado</h1>
+
+        <p *ngIf="order()!.status === 'Confirmed'">Tu pedido ha sido confirmado y está siendo procesado</p>
+        <p *ngIf="order()!.status === 'Pending'">Tu pedido está siendo procesado</p>
+        <p *ngIf="order()!.status === 'PendingPayment'">Tu pedido está esperando el pago para ser confirmado</p>
+        <p *ngIf="order()!.status === 'Cancelled'">Tu pedido ha sido cancelado</p>
       </div>
 
       <!-- Información del pedido -->
@@ -134,6 +151,17 @@
 
       <!-- Acciones -->
       <div class="confirmation-actions">
+        <!-- Botón de reintentar pago para órdenes pendientes de pago -->
+        <button *ngIf="isPendingPayment()"
+                mat-raised-button
+                color="accent"
+                (click)="retryPayment()"
+                [disabled]="isProcessingPayment()">
+          <mat-spinner *ngIf="isProcessingPayment()" diameter="20"></mat-spinner>
+          <mat-icon *ngIf="!isProcessingPayment()">payment</mat-icon>
+          {{ isProcessingPayment() ? 'Procesando...' : 'Volver a Intentar Pago' }}
+        </button>
+
         <button mat-raised-button color="primary" (click)="goToProducts()">
           <mat-icon>shopping_bag</mat-icon>
           Volver al Catálogo

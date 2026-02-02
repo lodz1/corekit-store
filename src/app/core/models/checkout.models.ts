@@ -68,7 +68,7 @@ export interface OrderTotals {
 export interface OrderSummary {
   orderId: string;
   orderNumber: string;
-  status: 'Pending' | 'Confirmed' | 'Cancelled';
+  status: 'Pending' | 'PendingPayment' | 'Confirmed' | 'Cancelled';
   items: OrderItem[];
   totals: OrderTotals;
   createdAt: string;
@@ -76,4 +76,36 @@ export interface OrderSummary {
   shippingAddress: ShippingAddress;
   notes?: string;
   paymentMethod: string;
+}
+
+// Modelos para pagos
+export interface CreatePaymentIntentRequest {
+  orderId: string;
+}
+
+export interface PaymentIntentDto {
+  id: string;
+  orderId: string;
+  amount: number;
+  currency: string;
+  provider: 'fake';
+  status: 'RequiresConfirmation' | 'Succeeded' | 'Failed' | 'Canceled';
+  clientToken: string;
+}
+
+export interface ConfirmPaymentRequest {
+  paymentIntentId: string;
+  paymentMethod: {
+    type: 'card';
+    cardNumber: string;
+    expMonth: string;
+    expYear: string;
+    cvc: string;
+    holderName?: string;
+  };
+}
+
+export interface PaymentResultDto {
+  paymentIntent: PaymentIntentDto;
+  order: OrderSummary;
 }

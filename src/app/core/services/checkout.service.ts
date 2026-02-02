@@ -6,7 +6,11 @@ import {
   CartItemRequest,
   CartValidationResult,
   CreateOrderRequest,
-  OrderSummary
+  OrderSummary,
+  CreatePaymentIntentRequest,
+  PaymentIntentDto,
+  ConfirmPaymentRequest,
+  PaymentResultDto
 } from '../models/checkout.models';
 
 @Injectable({
@@ -78,5 +82,27 @@ export class CheckoutService {
     if (typeof window !== 'undefined') {
       sessionStorage.removeItem('checkout_idempotency_key');
     }
+  }
+
+  /**
+   * Crea un intent de pago para una orden
+   */
+  createPaymentIntent(orderId: string): Observable<PaymentIntentDto> {
+    const payload: CreatePaymentIntentRequest = { orderId };
+    return this.http.post<PaymentIntentDto>(`${this.apiUrl}/payments/intents`, payload);
+  }
+
+  /**
+   * Confirma un pago
+   */
+  confirmPayment(payload: ConfirmPaymentRequest): Observable<PaymentResultDto> {
+    return this.http.post<PaymentResultDto>(`${this.apiUrl}/payments/confirm`, payload);
+  }
+
+  /**
+   * Obtiene un intent de pago por ID
+   */
+  getPaymentIntent(id: string): Observable<PaymentIntentDto> {
+    return this.http.get<PaymentIntentDto>(`${this.apiUrl}/payments/${id}`);
   }
 }

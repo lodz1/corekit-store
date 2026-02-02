@@ -17,12 +17,37 @@
   text-align: center;
   margin-bottom: 30px;
   padding: 30px;
-  background: linear-gradient(135deg, #4caf50, #45a049);
-  color: white;
   border-radius: 12px;
+
+  // Estado confirmado (verde)
+  &.confirmed {
+    background: linear-gradient(135deg, #4caf50, #45a049);
+    color: white;
+  }
+
+  // Estado pendiente (naranja)
+  &.pending {
+    background: linear-gradient(135deg, #ff9800, #f57c00);
+    color: white;
+  }
+
+  // Estado pendiente de pago (azul)
+  &.pending-payment {
+    background: linear-gradient(135deg, #2196f3, #1976d2);
+    color: white;
+  }
+
+  // Estado cancelado (rojo)
+  &.cancelled {
+    background: linear-gradient(135deg, #f44336, #d32f2f);
+    color: white;
+  }
 }
 
-.success-icon {
+.success-icon,
+.pending-icon,
+.payment-icon,
+.cancelled-icon {
   font-size: 64px;
   width: 64px;
   height: 64px;
@@ -81,6 +106,10 @@
 
 .status-pending {
   color: #ff9800;
+}
+
+.status-pendingpayment {
+  color: #2196f3;
 }
 
 .status-confirmed {

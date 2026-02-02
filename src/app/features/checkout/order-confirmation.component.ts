@@ -7,8 +7,10 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { MatDialog } from '@angular/material/dialog';
 import { CheckoutService } from '../../core/services/checkout.service';
-import { OrderSummary } from '../../core/models/checkout.models';
+import { OrderSummary, PaymentIntentDto, PaymentResultDto } from '../../core/models/checkout.models';
+import { PaymentDialogComponent, PaymentDialogData } from './payment-dialog.component';
 
 @Component({
   selector: 'app-order-confirmation',
@@ -29,9 +31,11 @@ export class OrderConfirmationComponent implements OnInit {
   private readonly router = inject(Router);
   private readonly snackBar = inject(MatSnackBar);
   private readonly checkoutService = inject(CheckoutService);
+  private readonly dialog = inject(MatDialog);
 
   // Signals
   isLoading = signal(true);
+  isProcessingPayment = signal(false);
   order = signal<OrderSummary | null>(null);
 
   ngOnInit(): void {
@@ -61,6 +65,7 @@ export class OrderConfirmationComponent implements OnInit {
     const status = this.order()?.status;
     switch (status) {
       case 'Pending': return 'schedule';
+      case 'PendingPayment': return 'payment';
       case 'Confirmed': return 'check_circle';
       case 'Cancelled': return 'cancel';
       default: return 'help';
@@ -76,6 +81,7 @@ export class OrderConfirmationComponent implements OnInit {
     const status = this.order()?.status;
     switch (status) {
       case 'Pending': return 'Pendiente';
+      case 'PendingPayment': return 'Pendiente de Pago';
       case 'Confirmed': return 'Confirmado';
       case 'Cancelled': return 'Cancelado';
       default: return 'Desconocido';
@@ -93,5 +99,63 @@ export class OrderConfirmationComponent implements OnInit {
 
   goToHome(): void {
     this.router.navigate(['/']);
+  }
+
+  async retryPayment(): Promise<void> {
+    const order = this.order();
+    if (!order || order.status !== 'PendingPayment') {
+      return;
+    }
+
+    this.isProcessingPayment.set(true);
+
+    try {
+      // Crear intent de pago
+      const paymentIntent = await this.checkoutService.createPaymentIntent(order.orderId).toPromise();
+
+      if (!paymentIntent) {
+        throw new Error('Error al crear el intent de pago');
+      }
+
+      // Abrir diálogo de pago
+      const dialogData: PaymentDialogData = {
+        paymentIntent,
+        orderNumber: order.orderNumber,
+        amount: order.totals.grandTotal
+      };
+
+      const dialogRef = this.dialog.open(PaymentDialogComponent, {
+        data: dialogData,
+        disableClose: true,
+        width: '500px',
+        maxWidth: '90vw'
+      });
+
+      const result = await dialogRef.afterClosed().toPromise();
+
+      if (result?.success) {
+        // Pago exitoso, recargar la orden
+        this.snackBar.open(`Pago aprobado. Pedido #${order.orderNumber} confirmado.`, 'Cerrar', {
+          duration: 5000,
+          horizontalPosition: 'end',
+          verticalPosition: 'top'
+        });
+
+        // Recargar la orden para actualizar el estado
+        await this.loadOrder();
+      } else {
+        // Usuario canceló o hubo error
+        this.snackBar.open('Pago cancelado. La orden permanece pendiente de pago.', 'Entendido', { duration: 5000 });
+      }
+    } catch (error: any) {
+      console.error('Error processing payment:', error);
+      this.snackBar.open('Error al procesar el pago. Intenta nuevamente.', 'Cerrar', { duration: 3000 });
+    } finally {
+      this.isProcessingPayment.set(false);
+    }
+  }
+
+  isPendingPayment(): boolean {
+    return this.order()?.status === 'PendingPayment';
   }
 }

@@ -1,0 +1,155 @@
+.payment-dialog {
+  min-width: 500px;
+  max-width: 600px;
+
+  .payment-header {
+    text-align: center;
+    margin-bottom: 24px;
+
+    h2 {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 0;
+      color: var(--mat-sys-on-surface);
+    }
+
+    .payment-subtitle {
+      margin: 8px 0 0 0;
+      color: var(--mat-sys-on-surface-variant);
+      font-size: 14px;
+    }
+  }
+
+  .payment-content {
+    max-height: 70vh;
+    overflow-y: auto;
+
+    .test-info {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--mat-sys-surface-container);
+      border: 1px solid var(--mat-sys-outline-variant);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 24px;
+
+      mat-icon {
+        color: var(--mat-sys-primary);
+        margin-top: 2px;
+      }
+
+      .test-info-content {
+        h4 {
+          margin: 0 0 8px 0;
+          color: var(--mat-sys-on-surface);
+          font-size: 14px;
+          font-weight: 500;
+        }
+
+        p {
+          margin: 4px 0;
+          color: var(--mat-sys-on-surface-variant);
+          font-size: 12px;
+          line-height: 1.4;
+
+          strong {
+            color: var(--mat-sys-on-surface);
+          }
+        }
+      }
+    }
+
+    .form-row {
+      display: flex;
+      gap: 16px;
+
+      .half-width {
+        flex: 1;
+      }
+    }
+
+    .cvc-field {
+      max-width: 120px;
+    }
+
+    .full-width {
+      width: 100%;
+    }
+
+    .error-message {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--mat-sys-error);
+      background: var(--mat-sys-error-container);
+      border: 1px solid var(--mat-sys-error);
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 16px;
+
+      mat-icon {
+        font-size: 20px;
+        width: 20px;
+        height: 20px;
+      }
+
+      span {
+        font-size: 14px;
+        font-weight: 500;
+      }
+    }
+  }
+
+  .payment-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+    padding: 16px 0 0 0;
+    margin: 0;
+
+    button {
+      min-width: 120px;
+
+      &[mat-raised-button] {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+    }
+  }
+}
+
+// Responsive
+@media (max-width: 600px) {
+  .payment-dialog {
+    min-width: 90vw;
+    max-width: 90vw;
+
+    .payment-content {
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+
+      .cvc-field {
+        max-width: 100%;
+      }
+    }
+  }
+}
+
+// Dark theme adjustments
+@media (prefers-color-scheme: dark) {
+  .payment-dialog {
+    .payment-content {
+      .test-info {
+        background: var(--mat-sys-surface-container-low);
+        border-color: var(--mat-sys-outline);
+      }
+    }
+  }
+}
+
