@@ -18,6 +18,10 @@ export const routes: Routes = [
     loadComponent: () => import('./features/cart/cart-page.component').then(c => c.CartPageComponent)
   },
   {
+    path: 'login',
+    loadComponent: () => import('./features/auth/login-page.component').then(c => c.LoginPageComponent)
+  },
+  {
     path: 'checkout',
     loadComponent: () => import('./features/checkout/checkout-page.component').then(c => c.CheckoutPageComponent)
   },
